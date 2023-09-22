@@ -75,7 +75,14 @@ public class GameController : MonoBehaviour
             }
             else if(slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
             {//Checking 후 병합
-
+                if(slot.itemObject.id == carryingItem.itemId)
+                {
+                    OnItemMergedWithTarget(slot.id);    //병합 함수 호출
+                }
+                else
+                {
+                    OnItemCarryFail();  //아이템 배치 실패
+                }
             }
         }
         else
@@ -83,6 +90,14 @@ public class GameController : MonoBehaviour
             if (!carryingItem) return;
             OnItemCarryFail();  //아이템 배치 실패
         }
+    }
+
+    void OnItemMergedWithTarget(int targetSlotId)
+    {//병합 함수
+        var slot = GetSlotById(targetSlotId);
+        Destroy(slot.itemObject.gameObject);            //slot에 있는 물체 파괴
+        slot.CreateItem(carryingItem.itemId + 1);       //슬롯에 다음 번호 물체 생성
+        Destroy(carryingItem.gameObject);               //잡고 있는 물체 파괴
     }
 
     void OnItemSelected()
@@ -93,6 +108,8 @@ public class GameController : MonoBehaviour
         delta *= Vector3.Distance(transform.position, _target);
         carryingItem.transform.position = Vector3.MoveTowards(carryingItem.transform.position, _target, delta);
     }
+
+   
 
     void OnItemCarryFail()
     {//아이템 배치 실패 시 실행
