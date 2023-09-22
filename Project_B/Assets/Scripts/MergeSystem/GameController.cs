@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))  //마우스 버튼을 놓을게
         {
-            SendRayCast();
+             SendRayCast();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
             else if(slot.state == Slot.SLOTSTATE.EMPTY && carryingItem != null)
             {//빈 슬롯에 아이템을 배치
                 slot.CreateItem(carryingItem.itemId);   //잡고 있는것 슬롯 위치에 생성
-                Destroy(carryingItem);      //잡고 있던것 파괴
+                Destroy(carryingItem.gameObject);      //잡고 있던것 파괴
             }
             else if(slot.state == Slot.SLOTSTATE.FULL && carryingItem != null)
             {//Checking 후 병합
